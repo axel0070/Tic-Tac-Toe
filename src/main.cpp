@@ -9,29 +9,43 @@ using namespace std;
 
 int main()
 {
-    bool isDraw = 0, isWon = 0;
-    bool isOver = 0;
+    bool isDraw, isWon, isOver, startAgain;
     char choice;
 
     MyBoard GameBoard;
-    GameBoard.drawBoard(); //Updates the board and displays it
 
-    while (!isOver)
+    do
     {
-        choice = startTurn(GameBoard); //Checks if the player's move is allowed
-        playerMove(GameBoard, choice);
+        isDraw = 0;
+        isWon = 0;
+        isOver = 0;
 
-        GameBoard.drawBoard();
+        GameBoard.drawBoard(); //Updates the board and displays it
 
-        isWon = GameBoard.isWon(); //checks if a player won the game
-
-        if (isWon != 1)
+        while (!isOver)
         {
-            isDraw = GameBoard.isFull(); //checks if there are still cells left to play
+            choice = startTurn(GameBoard); //Checks if the player's move is allowed
+            playerMove(GameBoard, choice);
+
+            GameBoard.drawBoard();
+
+            isWon = GameBoard.isWon(); //checks if a player won the game
+
+            if (isWon != 1)
+                isDraw = GameBoard.isFull(); //checks if there are still cells left to play
+
+            isOver = isDraw || isWon;
         }
 
-        isOver = isDraw || isWon;
-    }
+        startAgain = startOver(choice);
+
+        resetGame(GameBoard);
+
+    } while (startAgain);
+
+    cout << endl
+         << "Thank you for playing :-) " << endl;
+    cout << "Press any key to exit the program ... " << endl;
 
     return 0;
 }

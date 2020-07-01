@@ -5,26 +5,35 @@ using namespace std;
 
 MyBoard::MyBoard()
 {
-    cout << "Let's play !" << endl;
 }
 
 MyBoard::~MyBoard()
 {
-    cout << "End of the game" << endl;
 }
 
 void MyBoard::drawBoard()
 {
-    system("cls");
+    if (nbTurns != 1)
+    {
+        system("cls");
+    }
+    else
+    {
+        cout << "Let's play Tic-Tac-Toe !" << endl;
+    }
 
-    cout << "Tic-Tac-Toe - Turn " << nbTurns << endl;
+    cout << endl
+         << "\t   Turn " << nbTurns << endl;
     cout << endl;
-    cout << " " << currentCells[0] << " | " << currentCells[1] << " | " << currentCells[2] << endl;
-    cout << "-----------" << endl;
-    cout << " " << currentCells[3] << " | " << currentCells[4] << " | " << currentCells[5] << endl;
-    cout << "-----------" << std::endl;
-    cout << " " << currentCells[6] << " | " << currentCells[7] << " | " << currentCells[8] << endl;
+    cout << "\t " << currentCells[0] << " | " << currentCells[1] << " | " << currentCells[2] << endl;
+    cout << "\t-----------" << endl;
+    cout << "\t " << currentCells[3] << " | " << currentCells[4] << " | " << currentCells[5] << endl;
+    cout << "\t-----------" << endl;
+    cout << "\t " << currentCells[6] << " | " << currentCells[7] << " | " << currentCells[8] << endl;
     cout << endl;
+
+    /*for(int i = 0 ; i < 9 ; i+=3)
+    cout << "\t " << currentCells[i] << " | " << currentCells[i+1] << " | " << currentCells[i+2] << endl;*/
 }
 bool MyBoard::isFull()
 {
@@ -34,15 +43,15 @@ bool MyBoard::isFull()
     for (int i = 0; i < nbCells; i++)
     {
         if ('X' == currentCells[i] || 'O' == currentCells[i])
-        {
             checkedCells++;
-        }
     }
+
     if (checkedCells == nbCells)
     {
         cout << "Draw ! " << endl;
         isFull = 1;
     }
+
     return isFull;
 }
 bool MyBoard::isWon()
@@ -67,22 +76,17 @@ bool MyBoard::isWon()
         horizonWin = currentCells[0 + horizonStep] == currentCells[1 + horizonStep] && currentCells[1 + horizonStep] == currentCells[2 + horizonStep];
 
         if (verticalWin || horizonWin)
-        {
             isWon = 1;
-        }
     }
 
     diagCondition1 = currentCells[0] == currentCells[4] && currentCells[4] == currentCells[8];
     diagCondition2 = currentCells[2] == currentCells[4] && currentCells[4] == currentCells[6];
 
     if (isWon == 0 && (diagCondition1 || diagCondition2))
-    {
         isWon = 1;
-    }
+
     if (isWon)
-    {
         cout << "Congratulations Player " << player << " ! You win !" << endl;
-    }
 
     return isWon;
 }
