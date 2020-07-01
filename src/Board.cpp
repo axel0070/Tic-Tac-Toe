@@ -22,71 +22,75 @@ void MyBoard::drawBoard()
         cout << "Let's play Tic-Tac-Toe !" << endl;
     }
 
-    cout << endl
-         << "\t   Turn " << nbTurns << endl;
     cout << endl;
-    cout << "\t " << currentCells[0] << " | " << currentCells[1] << " | " << currentCells[2] << endl;
-    cout << "\t-----------" << endl;
-    cout << "\t " << currentCells[3] << " | " << currentCells[4] << " | " << currentCells[5] << endl;
-    cout << "\t-----------" << endl;
-    cout << "\t " << currentCells[6] << " | " << currentCells[7] << " | " << currentCells[8] << endl;
+    cout << "\t   Turn " << nbTurns << endl; //Header of the game
     cout << endl;
 
-    /*for(int i = 0 ; i < 9 ; i+=3)
-    cout << "\t " << currentCells[i] << " | " << currentCells[i+1] << " | " << currentCells[i+2] << endl;*/
+    for (int i = 0; i < 3; i++) //displays the board
+    {
+        cout << "\t ";
+
+        for (int j = 0; j < 3; j++)
+        {
+            if (j != 2)
+            {
+                cout << currentCells[i][j] << " | ";
+            }
+            else
+            {
+                cout << currentCells[i][j] << endl;
+            }
+        }
+
+        if (i < 2)
+            cout << "\t-----------" << endl;
+    }
+
+    cout << endl;
 }
 bool MyBoard::isFull()
 {
     int checkedCells = 0;
     bool isFull = 0;
 
-    for (int i = 0; i < nbCells; i++)
+    for (int i = 0; i < 3; i++) //counts the number of checked cells
     {
-        if ('X' == currentCells[i] || 'O' == currentCells[i])
-            checkedCells++;
+        for (int j = 0; j < 3; j++)
+        {
+            if (currentCells[i][j] == 'X' || currentCells[i][j] == 'O')
+                checkedCells++;
+        }
     }
 
-    if (checkedCells == nbCells)
+    if (checkedCells == 9) //checks if the board is full, declares Draw if true
     {
         cout << "Draw ! " << endl;
         isFull = 1;
     }
 
-    return isFull;
+    return isFull; //returns whether the board is full or not
 }
 bool MyBoard::isWon()
 {
     bool isWon = 0;
 
     bool verticalWin = 0;
-    int vertStep;
-
     bool horizonWin = 0;
-    int horizonStep;
+    bool diagWin = 0;
 
-    bool diagCondition1;
-    bool diagCondition2;
-
-    for (int i = 0; i < 3; i++)
+    for (int i = 0; i < 3; i++) //checks the columns, lines and diagonals of the board
     {
-        vertStep = i;
-        verticalWin = currentCells[0 + vertStep] == currentCells[3 + vertStep] && currentCells[3 + vertStep] == currentCells[6 + vertStep];
+        verticalWin = currentCells[0][i] == currentCells[1][i] && currentCells[1][i] == currentCells[2][i];
+        horizonWin = currentCells[i][0] == currentCells[i][1] && currentCells[i][1] == currentCells[i][2];
 
-        horizonStep = i * 3;
-        horizonWin = currentCells[0 + horizonStep] == currentCells[1 + horizonStep] && currentCells[1 + horizonStep] == currentCells[2 + horizonStep];
+        diagWin = currentCells[i][0] == currentCells[1][1] && currentCells[1][1] == currentCells[2 - i][2];
 
-        if (verticalWin || horizonWin)
+        if (verticalWin || horizonWin || diagWin) //if any of the 3 is true, the winning condition is fulfilled
             isWon = 1;
     }
 
-    diagCondition1 = currentCells[0] == currentCells[4] && currentCells[4] == currentCells[8];
-    diagCondition2 = currentCells[2] == currentCells[4] && currentCells[4] == currentCells[6];
-
-    if (isWon == 0 && (diagCondition1 || diagCondition2))
-        isWon = 1;
-
     if (isWon)
-        cout << "Congratulations Player " << player << " ! You win !" << endl;
+        cout << "Congratulations Player " << playerID << " ! You win !" << endl;
 
-    return isWon;
+    return isWon; //returns true if one of the players wins
 }

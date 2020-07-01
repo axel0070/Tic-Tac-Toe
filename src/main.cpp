@@ -2,8 +2,9 @@
 // Small project to get acquainted with C++
 
 #include <iostream>
-#include "gameSystem.h"
+#include <conio.h>
 #include "Board.h"
+#include "gameSystem.h"
 
 using namespace std;
 
@@ -22,10 +23,10 @@ int main()
 
         GameBoard.drawBoard(); //Updates the board and displays it
 
-        while (!isOver)
+        while (!isOver) //Main game loop
         {
             choice = startTurn(GameBoard); //Checks if the player's move is allowed
-            playerMove(GameBoard, choice);
+            playerMove(GameBoard, choice); //Then plays it
 
             GameBoard.drawBoard();
 
@@ -39,13 +40,15 @@ int main()
 
         startAgain = startOver(choice);
 
-        resetGame(GameBoard);
+        if (startAgain)
+            resetGame(GameBoard);
 
-    } while (startAgain);
+    } while (startAgain); //Loops until the player wants to stop playing
 
     cout << endl
          << "Thank you for playing :-) " << endl;
     cout << "Press any key to exit the program ... " << endl;
+    getch();
 
     return 0;
 }

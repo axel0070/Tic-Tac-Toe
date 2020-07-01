@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "gameSystem.h"
 
 using namespace std;
@@ -8,9 +9,9 @@ char startTurn(MyBoard &Board)
     char input;
     bool done = 0;
 
-    Board.player = (Board.nbTurns % 2 != 0) ? Board.player_one : Board.player_two;
+    Board.playerID = (Board.nbTurns % 2 != 0) ? 1 : 2; //picks which player (1 or 2) should play this turn
 
-    cout << "Player " << Board.player << "'s turn ! ";
+    cout << "Player " << Board.playerID << "'s turn ! ";
     cout << "Make your move : ";
 
     cin >> input;
@@ -18,13 +19,11 @@ char startTurn(MyBoard &Board)
 
     do
     {
-        for (int i = 0; i < Board.nbCells; i++)
+        if (input >= 49 && input <= 57) //checks if the input is between '1' and '9' (ASCII codes)
         {
-            if (input == Board.currentCells[i] && input == Board.starterCells[i])
-                done = 1;
+            done = 1;
         }
-
-        if (!done)
+        else
         {
             cout << endl
                  << "Invalid choice, must be a correct and available number" << endl;
@@ -34,17 +33,20 @@ char startTurn(MyBoard &Board)
             cin.ignore(1024, '\n');
         }
 
-    } while (!done);
+    } while (!done); // Control loop of the player's choice
 
-    return input;
+    return input; //returns a correct move
 }
 
 void playerMove(MyBoard &Board, char choice)
 {
-    for (int i = 0; i < Board.nbCells; i++)
+    for (int i = 0; i < 3; i++)
     {
-        if (choice == Board.currentCells[i])
-            Board.currentCells[i] = (Board.nbTurns % 2 != 0) ? 'X' : 'O';
+        for (int j = 0; j < 3; j++)
+        {
+            if (choice == Board.currentCells[i][j])                              //if the choice is available
+                Board.currentCells[i][j] = (Board.nbTurns % 2 != 0) ? 'X' : 'O'; //checks the chosen cell
+        }
     }
 
     Board.nbTurns++;
@@ -52,12 +54,15 @@ void playerMove(MyBoard &Board, char choice)
 
 void resetGame(MyBoard &Board)
 {
-    for (int i = 0; i < Board.nbCells; i++)
+    for (int i = 0; i < 3; i++)
     {
-        Board.currentCells[i] = Board.starterCells[i];
+        for (int j = 0; j < 3; j++)
+        {
+            Board.currentCells[i][j] = '0' + (i * 3) + (j + 1); //reset the 2D array into the original disposition
+        }
     }
 
-    Board.player = 1;
+    Board.playerID = 1; //reset player's turn
     Board.nbTurns = 1;
 
     system("cls");
@@ -65,20 +70,15 @@ void resetGame(MyBoard &Board)
 
 bool startOver(char choice)
 {
+
     bool result = 0;
     bool correct = 0;
 
-    cout << "Would you like to play again ? Y/N" << endl;
-    cin >> choice;
-    //cin.ignore(1024, '\n');
-
-    /*Erreur de logique, ici il y a deux entrées d'affile.
-    Il faudrait checker la première entrée PUIS voir si il faut rentrer dans le while*/
-
-    while (!correct)
+    do
     {
-        cout << "Entry must be y/Y or n/N" << endl;
+        cout << "Would you like to play again ? Must enter y-Y/n-N" << endl;
         cin >> choice;
+        cin.ignore(1024, '\n');
 
         if (choice == 'y' || choice == 'Y')
         {
@@ -90,7 +90,7 @@ bool startOver(char choice)
             correct = 1;
             result = 0;
         }
-    }
+    } while (!correct); //Control loop for the player's choice
 
-    return result;
+    return result; //returns true if the player wants to start again
 }
