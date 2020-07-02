@@ -1,6 +1,6 @@
 ENG/FR Descriptions
 
-# Jeu du morpion/"Tic-Tac-Toe" en anglais
+# Jeu du morpion
  Jeu de Tic-Tac-Toe en C++ jouable sur la console de commande.
  
  # Objectifs de ce projet
