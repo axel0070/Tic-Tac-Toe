@@ -14,6 +14,7 @@ public:
     MyBoard();
     ~MyBoard();
 
+    bool isChecked(char);
     bool isFull();
     bool isWon();
     void drawBoard();

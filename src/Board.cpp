@@ -48,6 +48,25 @@ void MyBoard::drawBoard()
 
     cout << endl;
 }
+bool MyBoard::isChecked(char input)
+{
+    char cell;
+    bool checked = 0;
+
+    for (int i = 0; i < 3; i++)
+    {
+        for (int j = 0; j < 3; j++)
+        {
+            cell = '0' + (i * 3) + (j + 1);
+
+            if (input == cell && (currentCells[i][j] == 'X' || currentCells[i][j] == 'O')) // If the desired cell is occupied, returns true
+                checked = 1;
+        }
+    }
+
+    return checked;
+}
+
 bool MyBoard::isFull()
 {
     int checkedCells = 0;

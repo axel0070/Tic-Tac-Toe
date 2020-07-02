@@ -45,8 +45,8 @@ int main()
 
     } while (startAgain); //Loops until the player wants to stop playing
 
-    cout << endl
-         << "Thank you for playing :-) " << endl;
+    cout << endl;
+    cout << "Thank you for playing :-) " << endl;
     cout << "Press any key to exit the program ... " << endl;
     getch();
 
